@@ -1,284 +1,282 @@
-<img src="https://talk.openmrs.org/uploads/default/original/2X/f/f1ec579b0398cb04c80a54c56da219b2440fe249.jpg" alt="OpenMRS"/>
-
-[![Build Status](https://travis-ci.org/openmrs/openmrs-core.svg?branch=master)](https://travis-ci.org/openmrs/openmrs-core) [![Coverage Status](https://coveralls.io/repos/github/openmrs/openmrs-core/badge.svg?branch=master)](https://coveralls.io/github/openmrs/openmrs-core?branch=master) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/a51303ee46c34775a7c31c8d6016da6b)](https://www.codacy.com/app/openmrs/openmrs-core?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=openmrs/openmrs-core&amp;utm_campaign=Badge_Grade)
-
-api: [![API](https://snyk.io/test/github/openmrs/openmrs-core/badge.svg?targetFile=api%2Fpom.xml)](https://snyk.io/test/github/openmrs/openmrs-core?targetFile=api%2Fpom.xml)
-test: [![test](https://snyk.io/test/github/openmrs/openmrs-core/badge.svg?targetFile=test%2Fpom.xml)](https://snyk.io/test/github/openmrs/openmrs-core?targetFile=test%2Fpom.xml)
-tools: [![tools](https://snyk.io/test/github/openmrs/openmrs-core/badge.svg?targetFile=tools%2Fpom.xml)](https://snyk.io/test/github/openmrs/openmrs-core?targetFile=tools%2Fpom.xml)
-web: [![web](https://snyk.io/test/github/openmrs/openmrs-core/badge.svg?targetFile=web%2Fpom.xml)](https://snyk.io/test/github/openmrs/openmrs-core?targetFile=web%2Fpom.xml)
-webapp: [![webapp](https://snyk.io/test/github/openmrs/openmrs-core/badge.svg?targetFile=webapp%2Fpom.xml)](https://snyk.io/test/github/openmrs/openmrs-core?targetFile=webapp%2Fpom.xml)
-
-OpenMRS is a patient-based medical record system focusing on giving providers a free customizable electronic medical record system (EMR).
-
-The mission of OpenMRS is to improve health care delivery in resource-constrained environments by coordinating a global community that creates a robust, scalable, user-driven, open source medical record system platform.
-
-#### Table of Contents
-
-1. [Build](#build)
-   1. [Prerequisites](#prerequisites)
-   2. [Build Command](#build-command)
-   3. [Deploy](#deploy)
-2. [Docker build](#docker-build)
-3. [Navigating the repository](#navigating-the-repository)
-4. [Software Development Kit](#software-development-kit)
-5. [Extending OpenMRS with Modules](#extending-openmrs-with-modules)
-6. [Documentation](#documentation)
-   1. [Developer guides](#developer-guides)
-   2. [Wiki](#wiki)
-   3. [Website](#website)
-7. [Contributing](#contributing)
-   1. [Code](#code)
-   2. [Code Reviews](#code-reviews)
-   3. [Translation](#translation)
-8. [Issues](#issues)
-9. [Community](#community)
-10. [Support](#support)
-11. [License](#license)
-
-## Build
-
-### Prerequisites
-
-#### Java
-
-OpenMRS is a Java application which is why you need to install a Java JDK.
-
-If you want to build the master branch you will need a Java JDK of minimum version 8.
-
-#### Maven
-
-Install the build tool [Maven](https://maven.apache.org/).
-
-You need to ensure that Maven uses the Java JDK needed for the branch you want to build.
-
-To do so execute
-
-```bash
-mvn -version
-```
-
-which will tell you what version Maven is using. Refer to the [Maven docs](https://maven.apache.org/configure.html) if you need to configure Maven.
-
-#### Git
-
-Install the version control tool [git](https://git-scm.com/) and clone this repository with
-
-```bash
-git clone https://github.com/openmrs/openmrs-core.git
-```
-
-### Build Command
-
-After you have taken care of the [Prerequisites](#prerequisites)
-
-Execute the following
-
-```bash
-cd openmrs-core
-mvn clean package
-```
-
-This will generate the OpenMRS application in `webapp/target/openmrs.war` which you will have to deploy into an application server like for example [tomcat](https://tomcat.apache.org/) or [jetty](http://www.eclipse.org/jetty/).
-
-### Deploy
-
-For development purposes you can simply deploy the `openmrs.war` into the application server jetty via
-
-```bash
-cd openmrs-core/webapp
-mvn jetty:run
-```
-
-If all goes well (check the console output) you can access the OpenMRS application at `localhost:8080/openmrs`.
-
-Refer to [Getting Started as a Developer - Maven](https://wiki.openmrs.org/display/docs/Maven) for some more information
-on useful Maven commands and build options.
-
-## Docker build
-
-Docker builds are still work in progress. We appreciate any feedback and improvements to the process.
-
-The only prerequisite needed is Docker. 
-
-In order to build a development version run:
-```bash 
-docker-compose build
-```
-It calls `mvn install` by default. If you would like to customize mvn build arguments you can do so by running:
-```bash
-docker-compose build --build-arg MVN_ARGS='install -DskipTests'
-```
-It is also possible to use the built dev image to run jetty:
-```bash
-docker-compose up
-```
-
-In order to build a production version run:
-```bash
-docker-compose -f docker-compose.yml build
-```
-It first builds the dev image and then an image with Tomcat and openmrs.war. 
-It has no dev dependencies.
-
-The production version can be run with:
-```bash
-docker-compose -f docker-compose.yml up
-```
-If you want to debug, you need to run a development version and connect your debugger to port 8000, which is exposed by default.
-
-Unfortunately, at this point any code changes require full restart and rebuild of the docker container. To speed up the process,
-please use:
-```bash
-docker-compose build --build-arg MVN_ARGS='install -DskipTests'
-docker-compose up
-```
-We are working towards providing support for Spring Boot auto-reload feature, which will be documented here once ready.
-
-It is also possible to deploy an image built by our CI, which is published at 
-https://hub.docker.com/r/openmrs/openmrs-core
-
-You can run any tag available with:
-```bash
-TAG=nightly docker-compose -f docker-compose.yml up
-```
-It is also possible to run a development version of an image with:
-```bash
-TAG=dev docker-compose up
-```
-All development versions contain dev suffix. The cache suffix is for use by our CI.
-
-## Navigating the repository
-
-The project tree is set up as follows:
-
+<div class="Box-sc-g0xbh4-0 bJMeLZ js-snippet-clipboard-copy-unpositioned" data-hpc="true"><article class="markdown-body entry-content container-lg" itemprop="text"><p dir="auto"><a target="_blank" rel="noopener noreferrer nofollow" href="https://camo.githubusercontent.com/9a54e70aac8e305084b3835fde8aae5c241351355a801ccb52a8a250732ad853/68747470733a2f2f74616c6b2e6f70656e6d72732e6f72672f75706c6f6164732f64656661756c742f6f726967696e616c2f32582f662f663165633537396230333938636230346338306135346335366461323139623234343066653234392e6a7067"><img src="https://camo.githubusercontent.com/9a54e70aac8e305084b3835fde8aae5c241351355a801ccb52a8a250732ad853/68747470733a2f2f74616c6b2e6f70656e6d72732e6f72672f75706c6f6164732f64656661756c742f6f726967696e616c2f32582f662f663165633537396230333938636230346338306135346335366461323139623234343066653234392e6a7067" alt="开放式MRS" data-canonical-src="https://talk.openmrs.org/uploads/default/original/2X/f/f1ec579b0398cb04c80a54c56da219b2440fe249.jpg" style="max-width: 100%;"></a></p>
+<p dir="auto"><a href="https://travis-ci.org/openmrs/openmrs-core" rel="nofollow"><img src="https://camo.githubusercontent.com/e48fbf4b32d57e49b6eac3208df4022037e38496fa374abd59a36c65690f2424/68747470733a2f2f7472617669732d63692e6f72672f6f70656e6d72732f6f70656e6d72732d636f72652e7376673f6272616e63683d6d6173746572" alt="构建状态" data-canonical-src="https://travis-ci.org/openmrs/openmrs-core.svg?branch=master" style="max-width: 100%;"></a> <a href="https://coveralls.io/github/openmrs/openmrs-core?branch=master" rel="nofollow"><img src="https://camo.githubusercontent.com/b28ee8e3061eb55a8e661fdfb6cd96e58e8b782c17cab38b2c851d9bee08359d/68747470733a2f2f636f766572616c6c732e696f2f7265706f732f6769746875622f6f70656e6d72732f6f70656e6d72732d636f72652f62616467652e7376673f6272616e63683d6d6173746572" alt="覆盖状态" data-canonical-src="https://coveralls.io/repos/github/openmrs/openmrs-core/badge.svg?branch=master" style="max-width: 100%;"></a> <a href="https://www.codacy.com/app/openmrs/openmrs-core?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=openmrs/openmrs-core&amp;utm_campaign=Badge_Grade" rel="nofollow"><img src="https://camo.githubusercontent.com/e1f963397f898fab59ee83cbd614ba974f83c8ec5daa60834523ca3f58a873c3/68747470733a2f2f6170692e636f646163792e636f6d2f70726f6a6563742f62616467652f47726164652f6135313330336565343663333437373561376333316338643630313664613662" alt="科达西徽章" data-canonical-src="https://api.codacy.com/project/badge/Grade/a51303ee46c34775a7c31c8d6016da6b" style="max-width: 100%;"></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">api:</font></font><a href="https://snyk.io/test/github/openmrs/openmrs-core?targetFile=api%2Fpom.xml" rel="nofollow"><img src="https://camo.githubusercontent.com/5797e4db56674efe79a1bf0a7aa8fb9beab16895d9235f8e17b75d6adf9625d5/68747470733a2f2f736e796b2e696f2f746573742f6769746875622f6f70656e6d72732f6f70656e6d72732d636f72652f62616467652e7376673f74617267657446696c653d617069253246706f6d2e786d6c" alt="应用程序编程接口" data-canonical-src="https://snyk.io/test/github/openmrs/openmrs-core/badge.svg?targetFile=api%2Fpom.xml" style="max-width: 100%;"></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+测试:</font></font><a href="https://snyk.io/test/github/openmrs/openmrs-core?targetFile=test%2Fpom.xml" rel="nofollow"><img src="https://camo.githubusercontent.com/00c8c90e71722922580732390fe51bfba1be968e7f97b5da0e8a85c4ea878723/68747470733a2f2f736e796b2e696f2f746573742f6769746875622f6f70656e6d72732f6f70656e6d72732d636f72652f62616467652e7376673f74617267657446696c653d74657374253246706f6d2e786d6c" alt="测试" data-canonical-src="https://snyk.io/test/github/openmrs/openmrs-core/badge.svg?targetFile=test%2Fpom.xml" style="max-width: 100%;"></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+工具: </font></font><a href="https://snyk.io/test/github/openmrs/openmrs-core?targetFile=tools%2Fpom.xml" rel="nofollow"><img src="https://camo.githubusercontent.com/38b98ca9bd5b2707334c5c470d59bd21fce57d3036d160b47cb4c25db29f0f35/68747470733a2f2f736e796b2e696f2f746573742f6769746875622f6f70656e6d72732f6f70656e6d72732d636f72652f62616467652e7376673f74617267657446696c653d746f6f6c73253246706f6d2e786d6c" alt="工具" data-canonical-src="https://snyk.io/test/github/openmrs/openmrs-core/badge.svg?targetFile=tools%2Fpom.xml" style="max-width: 100%;"></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+web: </font></font><a href="https://snyk.io/test/github/openmrs/openmrs-core?targetFile=web%2Fpom.xml" rel="nofollow"><img src="https://camo.githubusercontent.com/13f2ad4a8046384f1c9cbeaac9bebae3b2c882351bd200ed75cee9fc1539249e/68747470733a2f2f736e796b2e696f2f746573742f6769746875622f6f70656e6d72732f6f70656e6d72732d636f72652f62616467652e7376673f74617267657446696c653d776562253246706f6d2e786d6c" alt="网络" data-canonical-src="https://snyk.io/test/github/openmrs/openmrs-core/badge.svg?targetFile=web%2Fpom.xml" style="max-width: 100%;"></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+webapp:</font></font><a href="https://snyk.io/test/github/openmrs/openmrs-core?targetFile=webapp%2Fpom.xml" rel="nofollow"><img src="https://camo.githubusercontent.com/509dd08dafd653923fc778f136b796d71f7ac0ecd2eac9f4c3b4724e9762da6f/68747470733a2f2f736e796b2e696f2f746573742f6769746875622f6f70656e6d72732f6f70656e6d72732d636f72652f62616467652e7376673f74617267657446696c653d776562617070253246706f6d2e786d6c" alt="网络应用程序" data-canonical-src="https://snyk.io/test/github/openmrs/openmrs-core/badge.svg?targetFile=webapp%2Fpom.xml" style="max-width: 100%;"></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenMRS 是一个基于患者的医疗记录系统，专注于为提供商提供免费的可定制电子医疗记录系统 (EMR)。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenMRS 的使命是通过协调全球社区来创建强大的、可扩展的、用户驱动的开源医疗记录系统平台，从而改善资源有限环境中的医疗保健服务。</font></font></p>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">目录</font></font></h4><a id="user-content-table-of-contents" class="anchor" aria-label="固定链接：目录" href="#table-of-contents"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<ol dir="auto">
+<li><a href="#build"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">建造</font></font></a>
+<ol dir="auto">
+<li><a href="#prerequisites"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">先决条件</font></font></a></li>
+<li><a href="#build-command"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">构建命令</font></font></a></li>
+<li><a href="#deploy"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">部署</font></font></a></li>
+</ol>
+</li>
+<li><a href="#docker-build"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Docker 构建</font></font></a></li>
+<li><a href="#navigating-the-repository"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">浏览存储库</font></font></a></li>
+<li><a href="#software-development-kit"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">软件开发工具包</font></font></a></li>
+<li><a href="#extending-openmrs-with-modules"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用模块扩展 OpenMRS</font></font></a></li>
+<li><a href="#documentation"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">文档</font></font></a>
+<ol dir="auto">
+<li><a href="#developer-guides"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">开发者指南</font></font></a></li>
+<li><a href="#wiki"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">一周</font></font></a></li>
+<li><a href="#website"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">网站</font></font></a></li>
+</ol>
+</li>
+<li><a href="#contributing"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">贡献</font></font></a>
+<ol dir="auto">
+<li><a href="#code"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">代码</font></font></a></li>
+<li><a href="#code-reviews"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">代码审查</font></font></a></li>
+<li><a href="#translation"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">翻译</font></font></a></li>
+</ol>
+</li>
+<li><a href="#issues"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">问题</font></font></a></li>
+<li><a href="#community"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">社区</font></font></a></li>
+<li><a href="#support"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">支持</font></font></a></li>
+<li><a href="#license"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">执照</font></font></a></li>
+</ol>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">建造</font></font></h2><a id="user-content-build" class="anchor" aria-label="永久链接：构建" href="#build"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">先决条件</font></font></h3><a id="user-content-prerequisites" class="anchor" aria-label="永久链接：先决条件" href="#prerequisites"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">爪哇</font></font></h4><a id="user-content-java" class="anchor" aria-label="永久链接：Java" href="#java"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenMRS 是一个 Java 应用程序，这就是您需要安装 Java JDK 的原因。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果你想构建 master 分支，你将需要一个最低版本为 8 的 Java JDK。</font></font></p>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">梅文</font></font></h4><a id="user-content-maven" class="anchor" aria-label="永久链接：Maven" href="#maven"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装构建工具</font></font><a href="https://maven.apache.org/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Maven</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">您需要确保 Maven 使用您想要构建的分支所需的 Java JDK。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">为此执行</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>mvn -version</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="mvn -version" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">它会告诉你 Maven 正在使用什么版本。</font><font style="vertical-align: inherit;">如果需要配置 Maven，</font><font style="vertical-align: inherit;">请参阅</font></font><a href="https://maven.apache.org/configure.html" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Maven 文档。</font></font></a><font style="vertical-align: inherit;"></font></p>
+<div class="markdown-heading" dir="auto"><h4 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">git</font></font></h4><a id="user-content-git" class="anchor" aria-label="永久链接：Git" href="#git"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">安装版本控制工具</font></font><a href="https://git-scm.com/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">git</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">并使用以下命令克隆此存储库</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>git clone https://github.com/openmrs/openmrs-core.git</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="git clone https://github.com/openmrs/openmrs-core.git" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">构建命令</font></font></h3><a id="user-content-build-command" class="anchor" aria-label="永久链接：构建命令" href="#build-command"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">满足</font></font><a href="#prerequisites"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">先决条件后</font></font></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">执行以下命令</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre><span class="pl-c1">cd</span> openmrs-core
+mvn clean package</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="cd openmrs-core
+mvn clean package" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">这将生成 OpenMRS 应用程序，</font></font><code>webapp/target/openmrs.war</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">您必须在其中部署到应用程序服务器，例如</font></font><a href="https://tomcat.apache.org/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">tomcat</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">或</font></font><a href="http://www.eclipse.org/jetty/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">jetty</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></p>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">部署</font></font></h3><a id="user-content-deploy" class="anchor" aria-label="固定链接：部署" href="#deploy"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">出于开发目的，您可以</font></font><code>openmrs.war</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">通过以下方式简单地将其部署到应用程序服务器码头中</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre><span class="pl-c1">cd</span> openmrs-core/webapp
+mvn jetty:run</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="cd openmrs-core/webapp
+mvn jetty:run" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果一切顺利（检查控制台输出），您可以访问 OpenMRS 应用程序</font></font><code>localhost:8080/openmrs</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">： 。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">有关有用的 Maven 命令和构建选项的更多信息，</font><font style="vertical-align: inherit;">请参阅</font></font><a href="https://wiki.openmrs.org/display/docs/Maven" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">开发人员入门 - Maven 。</font></font></a><font style="vertical-align: inherit;"></font></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Docker 构建</font></font></h2><a id="user-content-docker-build" class="anchor" aria-label="永久链接：Docker 构建" href="#docker-build"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Docker 构建仍在进行中。我们感谢对该流程的任何反馈和改进。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">唯一需要的先决条件是 Docker。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">为了构建开发版本，请运行：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>docker-compose build</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="docker-compose build" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">它</font></font><code>mvn install</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">默认调用。如果您想自定义 mvn 构建参数，可以通过运行以下命令来实现：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>docker-compose build --build-arg MVN_ARGS=<span class="pl-s"><span class="pl-pds">'</span>install -DskipTests<span class="pl-pds">'</span></span></pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="docker-compose build --build-arg MVN_ARGS='install -DskipTests'" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">还可以使用构建的开发映像来运行 jetty：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>docker-compose up</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="docker-compose up" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">为了构建生产版本，请运行：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>docker-compose -f docker-compose.yml build</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="docker-compose -f docker-compose.yml build" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">它首先构建开发映像，然后使用 Tomcat 和 openmrs.war 构建映像。它没有开发依赖性。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">生产版本可以通过以下方式运行：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>docker-compose -f docker-compose.yml up</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="docker-compose -f docker-compose.yml up" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果要调试，则需要运行开发版本并将调试器连接到默认公开的端口 8000。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">不幸的是，此时任何代码更改都需要完全重新启动并重建 docker 容器。要加快该过程，请使用：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>docker-compose build --build-arg MVN_ARGS=<span class="pl-s"><span class="pl-pds">'</span>install -DskipTests<span class="pl-pds">'</span></span>
+docker-compose up</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="docker-compose build --build-arg MVN_ARGS='install -DskipTests'
+docker-compose up" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们正在努力提供对 Spring Boot 自动重新加载功能的支持，一旦准备好，将在此处记录。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">还可以部署由我们的 CI 构建的映像，该映像发布于
+</font></font><a href="https://hub.docker.com/r/openmrs/openmrs-core" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://hub.docker.com/r/openmrs/openmrs-core</font></font></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">您可以运行任何可用的标签：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>TAG=nightly docker-compose -f docker-compose.yml up</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="TAG=nightly docker-compose -f docker-compose.yml up" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">还可以使用以下命令运行映像的开发版本：</font></font></p>
+<div class="highlight highlight-source-shell notranslate position-relative overflow-auto" dir="auto"><pre>TAG=dev docker-compose up</pre><div class="zeroclipboard-container">
+    <clipboard-copy aria-label="Copy" class="ClipboardButton btn btn-invisible js-clipboard-copy m-2 p-0 tooltipped-no-delay d-flex flex-justify-center flex-items-center" data-copy-feedback="Copied!" data-tooltip-direction="w" value="TAG=dev docker-compose up" tabindex="0" role="button">
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-copy js-clipboard-copy-icon">
+    <path d="M0 6.75C0 5.784.784 5 1.75 5h1.5a.75.75 0 0 1 0 1.5h-1.5a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-1.5a.75.75 0 0 1 1.5 0v1.5A1.75 1.75 0 0 1 9.25 16h-7.5A1.75 1.75 0 0 1 0 14.25Z"></path><path d="M5 1.75C5 .784 5.784 0 6.75 0h7.5C15.216 0 16 .784 16 1.75v7.5A1.75 1.75 0 0 1 14.25 11h-7.5A1.75 1.75 0 0 1 5 9.25Zm1.75-.25a.25.25 0 0 0-.25.25v7.5c0 .138.112.25.25.25h7.5a.25.25 0 0 0 .25-.25v-7.5a.25.25 0 0 0-.25-.25Z"></path>
+</svg>
+      <svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-check js-clipboard-check-icon color-fg-success d-none">
+    <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0Z"></path>
+</svg>
+    </clipboard-copy>
+  </div></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">所有开发版本都包含 dev 后缀。缓存后缀供我们的 CI 使用。</font></font></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">浏览存储库</font></font></h2><a id="user-content-navigating-the-repository" class="anchor" aria-label="永久链接：浏览存储库" href="#navigating-the-repository"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">项目树设置如下：</font></font></p>
 <table>
- <tr>
-  <td>api/</td>
-  <td>Java and resource files for building the java api jar file.</td>
+ <tbody><tr>
+  <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">接口/</font></font></td>
+  <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">用于构建 java api jar 文件的 Java 和资源文件。</font></font></td>
  </tr>
  <tr>
-  <td>tools/</td>
-  <td>Meta code used during compiling and testing. Does not go into any released binary (like doclets).</td>
+  <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">工具/</font></font></td>
+  <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">编译和测试期间使用的元代码。不进入任何已发布的二进制文件（如 doclet）。</font></font></td>
  </tr>
  <tr>
-  <td>web/</td>
-  <td>Java and resource files that are used in the webapp/war file.</td>
+  <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">网络/</font></font></td>
+  <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">webapp/war 文件中使用的 Java 和资源文件。</font></font></td>
  </tr>
  <tr>
-  <td>webapp/</td>
-  <td>files used in building the war file (contains JSP files on older versions).</td>
+  <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">网络应用程序/</font></font></td>
+  <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">用于构建 war 文件的文件（包含旧版本上的 JSP 文件）。</font></font></td>
  </tr>
  <tr>
-  <td>pom.xml</td>
-  <td>The main maven file used to build and package OpenMRS.</td>
+  <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">pom.xml</font></font></td>
+  <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">用于构建和打包 OpenMRS 的主 Maven 文件。</font></font></td>
  </tr>  
-</table>
-
-## Software Development Kit
-
-For rapid development of modules and the OpenMRS Platform code check out the
-awesome SDK at
-
-https://wiki.openmrs.org/display/docs/OpenMRS+SDK
-
-## Extending OpenMRS with Modules
-
-OpenMRS has a modular architecture that allows developers to extend the OpenMRS core functionality by creating modules that can easily be added or removed to meet the needs of a specific implementation.
-
-Before creating your own module go to the [OpenMRS Module Repository](https://addons.openmrs.org/) and see if there is already a module for your specific use case. If so deploy and try it and if a functionality is missing join the developers of the module to add a feature.
-
-If you haven't found what you were looking for refer to the [Module - wiki](https://wiki.openmrs.org/display/docs/Modules) to learn how you can create a new module.
-
-## Documentation
-
-### Developer guides
-
-If you want to contribute please refer to these resources
-
-* [Getting Started as a Developer](https://wiki.openmrs.org/display/docs/Get+Started+as+a+Developer)
-* [How To Configure Your IDE](https://wiki.openmrs.org/display/docs/How-To+Setup+And+Use+Your+IDE)
-* [How To Make a Pull Request](https://wiki.openmrs.org/display/docs/Pull+Request+Tips)
-
-### Wiki
-
-If you are looking for detailed guides on how to install, configure, contribute and
-extend OpenMRS visit
-
-http://wiki.openmrs.org
-
-### Website
-
-If you are looking for more information regarding OpenMRS as an organization
-check
-
-http://openmrs.org
-
-## Contributing
-
-Contributions are very welcome, we can definitely use your help!
-
-OpenMRS organizes the privileges of its contributors in developer stages which
-are documented [here](https://wiki.openmrs.org/display/RES/OpenMRS+Developer+Stages).
-
-Read the following sections to find out where you could help.
-
-### Code
-
-Check out our [contributing guidelines](CONTRIBUTING.md), read through the [Developer guides](#developer-guides).
-
-After you've read up :eyeglasses: [grab an introductory issue](https://wiki.openmrs.org/display/docs/Contribute+as+a+Developer#ContributeasaDeveloper-Workonanissue) that is `Ready For Work`.
-
-### Code Reviews
-
-You might not have the time to develop yourself but enough experience with
-OpenMRS and/or reviewing code, your help on code reviews will be much
-appreciated!
-
-Read
-
-https://wiki.openmrs.org/display/docs/Code+Review
-
-and get started with re-:eyes: pull requests!
-
-### Translation
-
-We use
-
-https://www.transifex.com/openmrs/OpenMRS/
-
-to manage our translations.
-
-The `messages.properties` file in this repository is our single source of
-truth. It contains key, value pairs for the English language which is the
-default.
-
-Transifex fetches updates to this file every night which can then be translated
-by you and me on transifex website itself. At any time we can pull new translations from transifex
-back into this repository. Other languages like for ex. Spanish will then be in
-the `messages_es.properties` file.
-
-If you would like to know how to help with translations see
-
-http://openmrs.org/join-the-community/translate/
-
-## Issues
-
-If you want help fix existing issues or you found a bug and want to tell us please go to
-
-https://issues.openmrs.org
-
-## Community
-
-[![OpenMRS Talk](https://omrs-shields.psbrandt.io/custom/openmrs/talk/F26522?logo=openmrs)](http://talk.openmrs.org)
-[![OpenMRS IRC](https://img.shields.io/badge/openmrs-irc-EEA616.svg?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MTIiIGhlaWdodD0iNjEyIiB2aWV3Qm94PSIwIDAgNjEyIDYxMiI%2BPHBhdGggZD0iTTE1MyAyMjkuNWMtMjEuMTMzIDAtMzguMjUgMTcuMTE3LTM4LjI1IDM4LjI1UzEzMS44NjcgMzA2IDE1MyAzMDZjMjEuMTE0IDAgMzguMjUtMTcuMTE3IDM4LjI1LTM4LjI1UzE3NC4xMzMgMjI5LjUgMTUzIDIyOS41em0xNTMgMGMtMjEuMTMzIDAtMzguMjUgMTcuMTE3LTM4LjI1IDM4LjI1UzI4NC44NjcgMzA2IDMwNiAzMDZjMjEuMTE0IDAgMzguMjUtMTcuMTE3IDM4LjI1LTM4LjI1UzMyNy4xMzMgMjI5LjUgMzA2IDIyOS41em0xNTMgMGMtMjEuMTMzIDAtMzguMjUgMTcuMTE3LTM4LjI1IDM4LjI1UzQzNy44NjcgMzA2IDQ1OSAzMDZzMzguMjUtMTcuMTE3IDM4LjI1LTM4LjI1UzQ4MC4xMzMgMjI5LjUgNDU5IDIyOS41ek0zMDYgMEMxMzcuMDEyIDAgMCAxMTkuODc1IDAgMjY3Ljc1YzAgODQuNTE0IDQ0Ljg0OCAxNTkuNzUgMTE0Ljc1IDIwOC44MjZWNjEybDEzNC4wNDctODEuMzRjMTguNTUyIDMuMDYyIDM3LjYzOCA0Ljg0IDU3LjIwMyA0Ljg0IDE2OS4wMDggMCAzMDYtMTE5Ljg3NSAzMDYtMjY3Ljc1UzQ3NS4wMDggMCAzMDYgMHptMCA0OTcuMjVjLTIyLjMzOCAwLTQzLjkxLTIuNi02NC42NDMtNy4wMmwtOTAuMDQgNTQuMTI0IDEuMjA0LTg4LjdDODMuNSA0MTQuMTMzIDM4LjI1IDM0NS41MTMgMzguMjUgMjY3Ljc1YzAtMTI2Ljc0IDExOS44NzUtMjI5LjUgMjY3Ljc1LTIyOS41czI2Ny43NSAxMDIuNzYgMjY3Ljc1IDIyOS41UzQ1My44NzUgNDk3LjI1IDMwNiA0OTcuMjV6IiBmaWxsPSIjZmZmIi8%2BPC9zdmc%2B)](http://irc.openmrs.org)
-[![OpenMRS Telegram](https://img.shields.io/badge/openmrs-telegram-009384.svg?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgMjQwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIuNjY3IiB5MT0iLjE2NyIgeDI9Ii40MTciIHkyPSIuNzUiPjxzdG9wIHN0b3AtY29sb3I9IiMzN2FlZTIiIG9mZnNldD0iMCIvPjxzdG9wIHN0b3AtY29sb3I9IiMxZTk2YzgiIG9mZnNldD0iMSIvPjwvbGluZWFyR3JhZGllbnQ%2BPGxpbmVhckdyYWRpZW50IGlkPSJiIiB4MT0iLjY2IiB5MT0iLjQzNyIgeDI9Ii44NTEiIHkyPSIuODAyIj48c3RvcCBzdG9wLWNvbG9yPSIjZWZmN2ZjIiBvZmZzZXQ9IjAiLz48c3RvcCBzdG9wLWNvbG9yPSIjZmZmIiBvZmZzZXQ9IjEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSIxMjAiIGN5PSIxMjAiIHI9IjEyMCIgZmlsbD0idXJsKCNhKSIvPjxwYXRoIGZpbGw9IiNjOGRhZWEiIGQ9Ik05OCAxNzVjLTMuODg4IDAtMy4yMjctMS40NjgtNC41NjgtNS4xN0w4MiAxMzIuMjA3IDE3MCA4MCIvPjxwYXRoIGZpbGw9IiNhOWM5ZGQiIGQ9Ik05OCAxNzVjMyAwIDQuMzI1LTEuMzcyIDYtM2wxNi0xNS41NTgtMTkuOTU4LTEyLjAzNSIvPjxwYXRoIGZpbGw9InVybCgjYikiIGQ9Ik0xMDAuMDQgMTQ0LjQxbDQ4LjM2IDM1LjczYzUuNTIgMy4wNDQgOS41IDEuNDY3IDEwLjg3Ni01LjEyNGwxOS42ODUtOTIuNzYzYzIuMDE2LTguMDgtMy4wOC0xMS43NDYtOC4zNTgtOS4zNWwtMTE1LjU5IDQ0LjU3MmMtNy44OSAzLjE2NS03Ljg0NCA3LjU2Ny0xLjQ0IDkuNTI4bDI5LjY2NCA5LjI2IDY4LjY3My00My4zMjZjMy4yNC0xLjk2NiA2LjIxNy0uOTEgMy43NzUgMS4yNTgiLz48L3N2Zz4%3D)](https://telegram.me/openmrs)
-[![OpenMRS Wiki](https://img.shields.io/badge/openmrs-wiki-5B57A6.svg?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAiIGhlaWdodD0iMTQyIiB2aWV3Qm94PSIwIDAgMTYwIDE0MiI%2BPHBhdGggY2xhc3M9InN0MCIgZD0iTTExMy42MTUgOTQuNDk0Yy0yLjAxNi0zLjk3NC00LjQwNS03Ljk5LTcuMi0xMi4wNzctMi0yLjkzLTQuMTQ1LTUuNzc4LTYuMzg3LTguNTY3LS45MS0xLjEzNi0uNTMtMi41NDguMTY3LTMuMjUuNjg4LS43MDUgMS4zOC0xLjQxIDIuMDc2LTIuMTIgOS41OC05Ljc3IDE5LjQ5LTE5Ljg3MyAyNy4wOS0zMC43ODcgOC4wOC0xMS42MSAxMi41Ni0yMi42MjQgMTMuNjktMzMuOTU0LjEyLTEuMTQtLjQtMi4zNS0xLjMyLTMuMDUtLjYtLjQ2LTEuMzMtLjctMi4wNy0uNy0uNDEgMC0uODIuMDctMS4yMS4yMi03LjM3IDIuODItMTQuODUgNC45Ni0yMS42OCA2LjU1LTEuMzkuMzItMi41MSAxLjM2LTIuOTggMi42LTQuOTggMTMuNjMtMTcuNjggMjYuNjEtMzEuMDEgNDAuMi0uNTMuNTEtMS4yOCAxLjE4LTIuNSAxLjE4cy0xLjk2LS42NS0yLjUtMS4xOGMtMTMuMzMtMTMuNTktMjYuMDMtMjYuNTItMzEtNDAuMTUtLjQ2LTEuMjQtMS41OS0yLjI4LTIuOTgtMi42QzM2Ljk0IDUuMjIgMjkuNDUgMi45IDIyLjEuMDhjLS4zOTgtLjE1LS44MS0uMjI1LTEuMjItLjIyNS0uNzQgMC0xLjQ3LjI0LTIuMDcuNy0uOTQuNzE4LTEuNDQgMS44NzItMS4zMiAzLjA0OCAxLjEzIDExLjMzMiA1LjYgMjIuNDggMTMuNjg0IDM0LjA5IDcuNiAxMC45MTUgMTcuNTEgMjEuMDE3IDI3LjA5IDMwLjc4NyAxNy42NSAxNy45OTQgMzQuMzMgMzQuOTk3IDM1Ljc5IDU0LjcxMy4xMyAxLjc4IDEuNjIgMy4xNTggMy40IDMuMTU4aDIwLjc0Yy45NCAwIDEuODMtLjM4IDIuNDctMS4wNi42NS0uNjcuOTktMS41OC45NC0yLjUyLS4xOC0zLjcxLS43Mi03LjQyLTEuNTktMTEuMTZoLjAxYy0uMDI4LS4xMS0uMDQ3LS4yMi0uMDQ3LS4zMyAwLS43NS41ODgtMS4zOCAxLjM1Ny0xLjM4LjA3IDAgLjEzLjAyLjIuMDMgMTYuOTMgMi40OCAyNy42MzYgNi40NCAyNy42NSAxMC44di4wMWMwIDQuMTEtOS42MjMgMTAuMzEtMjUuMjY2IDE0Ljg1bC0uMDA1LjAxYy0xLjM5LjQtMi40MDYgMS42Ni0yLjQwNiAzLjE1IDAgMS44MSAxLjQ5MyAzLjI4IDMuMzQgMy4yOC4yNTUgMCAuNS0uMDMuNzQtLjA4IDIxLjAyNi00Ljg2IDM0Ljk2NS0xMy4wMzQgMzQuOTY1LTIyLjI2MiAwLTEwLjk1NC0xOC44NC0yMC43NC00Ni45LTI1LjE1MnpNNTguMDEgODMuODA2Yy0uNDI1LS40NDQtMS4yNzctMS4wMzgtMi40MjItMS4wMzgtMS41NDcgMC0yLjQ2NiAxLTIuODEyIDEuNTMtMi4yNjQgMy40NDQtNC4yNCA2Ljg0My01Ljk0NiAxMC4yMDhDMTguODEgOTguOTI0IDAgMTA4LjcgMCAxMTkuNjVjMCA5LjIzNyAxMy44NCAxNy4zOTQgMzQuOTA1IDIyLjI1NS4wMDMuMDAyLjAyMyAwIC4wMyAwIC4yNS4wNTguNTA0LjA5NS43Ny4wOTUgMS44NDYgMCAzLjM0LTEuNDcgMy4zNC0zLjI4IDAtMS40ODctMS4wMTctMi43My0yLjQtMy4xM2wtLjAxLS4wMjJjLTE1LjY0NS00LjU0LTI1LjI3LTEwLjc0NC0yNS4yNy0xNC44NTJ2LS4wMWMuMDE3LTQuMzUzIDEwLjY5My04LjMwNiAyNy41OC0xMC43ODcuMDYyLS4wMS4xMi0uMDIuMTgyLS4wMi43NzUgMCAxLjM2OC42MyAxLjM2OCAxLjM5IDAgLjExLS4wMi4yMy0uMDQ2LjMzbC4wMS4wMWMtLjg3IDMuNzEtMS40IDcuNDEtMS41OCAxMS4xMS0uMDUuOTMuMjkgMS44NS45NCAyLjUzLjY0LjY3IDEuNTQgMS4wNiAyLjQ4IDEuMDZoMjAuNzRjMS43OCAwIDMuMjgtMS40IDMuNDEtMy4xNy40NS02LjA3IDIuMzUtMTIuMTUgNS43OC0xOC41NCAxLjE5LTIuMjEuMjYtNC4yOS0uNDItNS4xOC0zLjQyLTQuNDMtNy41OS05LjE2LTEzLjgxLTE1LjY1eiIgZmlsbD0iI2ZmZiIvPjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik03Ny44NjggMzIuNTc4Yy44Mi43OTggMS43NS45NDcgMi4zOS45NDdoLjAwNmMuNjQyIDAgMS41Ny0uMTQ4IDIuMzktLjk0NiA3LjMxMy03LjExIDExLjI0Mi0xNS40IDEyLjEwMy0xNy43MS4xMjUtLjM0LjI1Mi0uNzMuMjUyLTEuMjYgMC0xLjg0LTEuNTQtMy4xNi0zLjE0LTMuMTYtMS4zMyAwLTUuMS4zOS0xMS41OS4zOWgtLjA1Yy02LjUgMC0xMC4yNy0uMzktMTEuNTktLjM5LTEuNjEgMC0zLjE0IDEuMzEtMy4xNCAzLjE1IDAgLjUzLjEzLjkyLjI1IDEuMjYuODYgMi4zIDQuNzkgMTAuNTkgMTIuMSAxNy43eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg%3D%3D)](https://wiki.openmrs.org)
-
-## Support
-
-Talk to us on [OpenMRS Talk](https://talk.openmrs.org/)
-
-## License
-
-[MPL 2.0 w/ HD](http://openmrs.org/license/) © [OpenMRS Inc.](http://www.openmrs.org/)
-
+</tbody></table>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">软件开发工具包</font></font></h2><a id="user-content-software-development-kit" class="anchor" aria-label="永久链接：软件开发套件" href="#software-development-kit"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">要快速开发模块和 OpenMRS 平台代码，请查看以下很棒的 SDK：</font></font></p>
+<p dir="auto"><a href="https://wiki.openmrs.org/display/docs/OpenMRS+SDK" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://wiki.openmrs.org/display/docs/OpenMRS+SDK</font></font></a></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">使用模块扩展 OpenMRS</font></font></h2><a id="user-content-extending-openmrs-with-modules" class="anchor" aria-label="永久链接：使用模块扩展 OpenMRS" href="#extending-openmrs-with-modules"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenMRS 具有模块化架构，允许开发人员通过创建可轻松添加或删除的模块来扩展 OpenMRS 核心功能，以满足特定实现的需求。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在创建您自己的模块之前，请转到</font></font><a href="https://addons.openmrs.org/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenMRS 模块存储库</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">并查看是否已有适合您的特定用例的模块。如果是这样，请部署并尝试它，如果缺少功能，请加入模块的开发人员以添加功能。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您尚未找到所需内容，请参阅</font></font><a href="https://wiki.openmrs.org/display/docs/Modules" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">模块 - wiki</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">以了解如何创建新模块。</font></font></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">文档</font></font></h2><a id="user-content-documentation" class="anchor" aria-label="永久链接：文档" href="#documentation"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">开发者指南</font></font></h3><a id="user-content-developer-guides" class="anchor" aria-label="永久链接：开发者指南" href="#developer-guides"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您想做出贡献，请参阅这些资源</font></font></p>
+<ul dir="auto">
+<li><a href="https://wiki.openmrs.org/display/docs/Get+Started+as+a+Developer" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">开发人员入门</font></font></a></li>
+<li><a href="https://wiki.openmrs.org/display/docs/How-To+Setup+And+Use+Your+IDE" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如何配置您的 IDE</font></font></a></li>
+<li><a href="https://wiki.openmrs.org/display/docs/Pull+Request+Tips" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如何提出拉取请求</font></font></a></li>
+</ul>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">一周</font></font></h3><a id="user-content-wiki" class="anchor" aria-label="永久链接：维基" href="#wiki"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您正在寻找有关如何安装、配置、贡献和扩展 OpenMRS 的详细指南，请访问</font></font></p>
+<p dir="auto"><a href="http://wiki.openmrs.org" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">http://wiki.openmrs.org</font></font></a></p>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">网站</font></font></h3><a id="user-content-website" class="anchor" aria-label="永久链接：网站" href="#website"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您正在寻找有关 OpenMRS 作为组织的更多信息，请查看</font></font></p>
+<p dir="auto"><a href="http://openmrs.org" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">http://openmrs.org</font></font></a></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">贡献</font></font></h2><a id="user-content-contributing" class="anchor" aria-label="永久链接：贡献" href="#contributing"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">非常欢迎您的贡献，我们绝对需要您的帮助！</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenMRS 在开发者阶段组织其贡献者的权限，这些权限记录</font></font><a href="https://wiki.openmrs.org/display/RES/OpenMRS+Developer+Stages" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">在此处</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">请阅读以下部分，了解您可以在哪些方面提供帮助。</font></font></p>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">代码</font></font></h3><a id="user-content-code" class="anchor" aria-label="永久链接：代码" href="#code"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">查看我们的</font></font><a href="/openmrs/openmrs-core/blob/master/CONTRIBUTING.md"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">贡献指南</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，通读</font></font><a href="#developer-guides"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">开发人员指南</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">读完后👓，</font></font><a href="https://wiki.openmrs.org/display/docs/Contribute+as+a+Developer#ContributeasaDeveloper-Workonanissue" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">请阅读一个介绍性问题</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">，即</font></font><code>Ready For Work</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.</font></font></p>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">代码审查</font></font></h3><a id="user-content-code-reviews" class="anchor" aria-label="永久链接：代码审查" href="#code-reviews"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">您可能没有时间自行开发，但有足够的 OpenMRS 和/或审查代码经验，我们将非常感谢您在代码审查方面的帮助！</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">读</font></font></p>
+<p dir="auto"><a href="https://wiki.openmrs.org/display/docs/Code+Review" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://wiki.openmrs.org/display/docs/Code+Review</font></font></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">并开始使用 re-:eyes: pull requests！</font></font></p>
+<div class="markdown-heading" dir="auto"><h3 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">翻译</font></font></h3><a id="user-content-translation" class="anchor" aria-label="永久链接：翻译" href="#translation"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">我们用</font></font></p>
+<p dir="auto"><a href="https://www.transifex.com/openmrs/OpenMRS/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://www.transifex.com/openmrs/OpenMRS/</font></font></a></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">管理我们的翻译。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">此存储库中的文件</font></font><code>messages.properties</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">是我们的唯一事实来源。它包含默认英语的键值对。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Transifex 每晚都会获取此文件的更新，然后您和我可以在 Transifex 网站本身上进行翻译。我们可以随时将新翻译从 transifex 拉回此存储库。其他语言如 for ex。西班牙语将出现在</font></font><code>messages_es.properties</code><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">文件中。</font></font></p>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您想了解如何帮助翻译，请参阅</font></font></p>
+<p dir="auto"><a href="http://openmrs.org/join-the-community/translate/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">http://openmrs.org/join-the-community/translate/</font></font></a></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">问题</font></font></h2><a id="user-content-issues" class="anchor" aria-label="永久链接：问题" href="#issues"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">如果您需要帮助解决现有问题或发现错误并想告诉我们，请访问</font></font></p>
+<p dir="auto"><a href="https://issues.openmrs.org" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">https://issues.openmrs.org</font></font></a></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">社区</font></font></h2><a id="user-content-community" class="anchor" aria-label="永久链接：社区" href="#community"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><a href="http://talk.openmrs.org" rel="nofollow"><img src="https://camo.githubusercontent.com/dd467555f40ac466a2134f2e76e9714d11c4359cf37f443251bdc92e4ffba9d2/68747470733a2f2f6f6d72732d736869656c64732e70736272616e64742e696f2f637573746f6d2f6f70656e6d72732f74616c6b2f4632363532323f6c6f676f3d6f70656e6d7273" alt="OpenMRS 讲座" data-canonical-src="https://omrs-shields.psbrandt.io/custom/openmrs/talk/F26522?logo=openmrs" style="max-width: 100%;"></a>
+<a href="http://irc.openmrs.org" rel="nofollow"><img src="https://camo.githubusercontent.com/65ebee2ae8a71829ef2a6953608d048131c802bed05d7c749396f3ca0c041154/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6f70656e6d72732d6972632d4545413631362e7376673f6c6f676f3d64617461253341696d616765253246737667253242786d6c25334262617365363425324350484e325a79423462577875637a30696148523063446f764c336433647935334d793576636d63764d6a41774d43397a646d6369494864705a48526f505349324d5449694947686c6157646f644430694e6a45794969423261575633516d393450534977494441674e6a4579494459784d694925324250484268644767675a443069545445314d7941794d6a6b754e574d744d6a45754d544d7a494441744d7a67754d6a55674d5463754d5445334c544d344c6a493149444d344c6a4931557a457a4d5334344e6a63674d7a4132494445314d79417a4d445a6a4d6a45754d544530494441674d7a67754d6a55744d5463754d54453349444d344c6a49314c544d344c6a4931557a45334e4334784d7a4d674d6a49354c6a55674d54557a494449794f533431656d30784e544d674d474d744d6a45754d544d7a494441744d7a67754d6a55674d5463754d5445334c544d344c6a493149444d344c6a4931557a49344e4334344e6a63674d7a413249444d774e69417a4d445a6a4d6a45754d544530494441674d7a67754d6a55744d5463754d54453349444d344c6a49314c544d344c6a4931557a4d794e7934784d7a4d674d6a49354c6a55674d7a4132494449794f533431656d30784e544d674d474d744d6a45754d544d7a494441744d7a67754d6a55674d5463754d5445334c544d344c6a493149444d344c6a4931557a517a4e7934344e6a63674d7a4132494451314f53417a4d445a7a4d7a67754d6a55744d5463754d54453349444d344c6a49314c544d344c6a4931557a51344d4334784d7a4d674d6a49354c6a55674e445535494449794f533431656b307a4d4459674d454d784d7a63754d444579494441674d4341784d546b754f446331494441674d6a59334c6a6331597a41674f4451754e544530494451304c6a67304f4341784e546b754e7a55674d5445304c6a6331494449774f4334344d6a5a574e6a45796244457a4e4334774e4463744f4445754d7a526a4d5467754e54557949444d754d44597949444d334c6a597a4f4341304c6a6730494455334c6a49774d7941304c6a6730494445324f5334774d4467674d43417a4d4459744d5445354c6a67334e53417a4d4459744d6a59334c6a6331557a51334e5334774d4467674d43417a4d4459674d4870744d4341304f5463754d6a566a4c5449794c6a4d7a4f4341774c54517a4c6a6b784c5449754e6930324e4334324e444d744e7934774d6d77744f5441754d4451674e5451754d544930494445754d6a41304c5467344c6a64444f444d754e5341304d5451754d544d7a49444d344c6a493149444d304e5334314d544d674d7a67754d6a55674d6a59334c6a6331597a41744d5449324c6a6330494445784f5334344e7a55744d6a49354c6a55674d6a59334c6a63314c5449794f533431637a49324e7934334e5341784d4449754e7a59674d6a59334c6a6331494449794f533431557a51314d7934344e7a55674e446b334c6a493149444d774e6941304f5463754d6a56364969426d615778735053496a5a6d5a6d4969382532425043397a646d63253242" alt="OpenMRS IRC" data-canonical-src="https://img.shields.io/badge/openmrs-irc-EEA616.svg?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MTIiIGhlaWdodD0iNjEyIiB2aWV3Qm94PSIwIDAgNjEyIDYxMiI%2BPHBhdGggZD0iTTE1MyAyMjkuNWMtMjEuMTMzIDAtMzguMjUgMTcuMTE3LTM4LjI1IDM4LjI1UzEzMS44NjcgMzA2IDE1MyAzMDZjMjEuMTE0IDAgMzguMjUtMTcuMTE3IDM4LjI1LTM4LjI1UzE3NC4xMzMgMjI5LjUgMTUzIDIyOS41em0xNTMgMGMtMjEuMTMzIDAtMzguMjUgMTcuMTE3LTM4LjI1IDM4LjI1UzI4NC44NjcgMzA2IDMwNiAzMDZjMjEuMTE0IDAgMzguMjUtMTcuMTE3IDM4LjI1LTM4LjI1UzMyNy4xMzMgMjI5LjUgMzA2IDIyOS41em0xNTMgMGMtMjEuMTMzIDAtMzguMjUgMTcuMTE3LTM4LjI1IDM4LjI1UzQzNy44NjcgMzA2IDQ1OSAzMDZzMzguMjUtMTcuMTE3IDM4LjI1LTM4LjI1UzQ4MC4xMzMgMjI5LjUgNDU5IDIyOS41ek0zMDYgMEMxMzcuMDEyIDAgMCAxMTkuODc1IDAgMjY3Ljc1YzAgODQuNTE0IDQ0Ljg0OCAxNTkuNzUgMTE0Ljc1IDIwOC44MjZWNjEybDEzNC4wNDctODEuMzRjMTguNTUyIDMuMDYyIDM3LjYzOCA0Ljg0IDU3LjIwMyA0Ljg0IDE2OS4wMDggMCAzMDYtMTE5Ljg3NSAzMDYtMjY3Ljc1UzQ3NS4wMDggMCAzMDYgMHptMCA0OTcuMjVjLTIyLjMzOCAwLTQzLjkxLTIuNi02NC42NDMtNy4wMmwtOTAuMDQgNTQuMTI0IDEuMjA0LTg4LjdDODMuNSA0MTQuMTMzIDM4LjI1IDM0NS41MTMgMzguMjUgMjY3Ljc1YzAtMTI2Ljc0IDExOS44NzUtMjI5LjUgMjY3Ljc1LTIyOS41czI2Ny43NSAxMDIuNzYgMjY3Ljc1IDIyOS41UzQ1My44NzUgNDk3LjI1IDMwNiA0OTcuMjV6IiBmaWxsPSIjZmZmIi8%2BPC9zdmc%2B" style="max-width: 100%;"></a>
+<a href="https://telegram.me/openmrs" rel="nofollow"><img src="https://camo.githubusercontent.com/d144ca4c0f60d12244a1b6d98db9528e95a9bdc07f3e4078228267c24d9e56d1/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6f70656e6d72732d74656c656772616d2d3030393338342e7376673f6c6f676f3d64617461253341696d616765253246737667253242786d6c25334262617365363425324350484e325a79423462577875637a30696148523063446f764c336433647935334d793576636d63764d6a41774d43397a646d636949485a705a58644362336739496a41674d4341794e4441674d6a5177496a34385a47566d637a343862476c755a57467952334a685a476c6c626e516761575139496d456949486778505349754e6a5933496942354d5430694c6a45324e79496765444939496934304d54636949486b79505349754e7a5569506a787a6447397749484e3062334174593239736233493949694d7a4e32466c5a5449694947396d5a6e4e6c644430694d434976506a787a6447397749484e3062334174593239736233493949694d785a546b32597a67694947396d5a6e4e6c644430694d534976506a777662476c755a57467952334a685a476c6c626e5125324250477870626d5668636b6479595752705a57353049476c6b50534a69496942344d5430694c6a5932496942354d5430694c6a517a4e79496765444939496934344e54456949486b79505349754f444179496a3438633352766343427a644739774c574e76624739795053496a5a575a6d4e325a6a496942765a6d5a7a5a585139496a41694c7a3438633352766343427a644739774c574e76624739795053496a5a6d5a6d496942765a6d5a7a5a585139496a45694c7a34384c327870626d5668636b6479595752705a573530506a77765a47566d637a343859326c795932786c49474e34505349784d6a416949474e35505349784d6a416949484939496a45794d4349675a6d6c736244306964584a734b434e684b534976506a78775958526f49475a706247773949694e6a4f4752685a57456949475139496b30354f4341784e7a566a4c544d754f446734494441744d7934794d6a63744d5334304e6a67744e4334314e6a67744e5334784e3077344d6941784d7a49754d6a4133494445334d4341344d434976506a78775958526f49475a706247773949694e684f574d355a47516949475139496b30354f4341784e7a566a4d794177494451754d7a49314c5445754d7a6379494459744d3277784e6930784e5334314e5467744d546b754f5455344c5445794c6a417a4e534976506a78775958526f49475a7062477739496e56796243676a59696b6949475139496b30784d4441754d4451674d5451304c6a5178624451344c6a4d3249444d314c6a637a597a55754e5449674d7934774e4451674f533431494445754e445933494445774c6a67334e6930314c6a45794e4777784f5334324f4455744f5449754e7a597a597a49754d4445324c5467754d4467744d7934774f4330784d5334334e4459744f43347a4e5467744f53347a4e5777744d5445314c6a5535494451304c6a55334d6d4d744e7934344f53417a4c6a45324e5330334c6a67304e4341334c6a55324e7930784c6a513049446b754e544934624449354c6a59324e4341354c6a4932494459344c6a59334d7930304d79347a4d6a5a6a4d7934794e4330784c6a6b324e6941324c6a49784e7930754f5445674d7934334e7a55674d5334794e5467694c7a34384c334e325a7a34253344" alt="OpenMRS 电报" data-canonical-src="https://img.shields.io/badge/openmrs-telegram-009384.svg?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgMjQwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIuNjY3IiB5MT0iLjE2NyIgeDI9Ii40MTciIHkyPSIuNzUiPjxzdG9wIHN0b3AtY29sb3I9IiMzN2FlZTIiIG9mZnNldD0iMCIvPjxzdG9wIHN0b3AtY29sb3I9IiMxZTk2YzgiIG9mZnNldD0iMSIvPjwvbGluZWFyR3JhZGllbnQ%2BPGxpbmVhckdyYWRpZW50IGlkPSJiIiB4MT0iLjY2IiB5MT0iLjQzNyIgeDI9Ii44NTEiIHkyPSIuODAyIj48c3RvcCBzdG9wLWNvbG9yPSIjZWZmN2ZjIiBvZmZzZXQ9IjAiLz48c3RvcCBzdG9wLWNvbG9yPSIjZmZmIiBvZmZzZXQ9IjEiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48Y2lyY2xlIGN4PSIxMjAiIGN5PSIxMjAiIHI9IjEyMCIgZmlsbD0idXJsKCNhKSIvPjxwYXRoIGZpbGw9IiNjOGRhZWEiIGQ9Ik05OCAxNzVjLTMuODg4IDAtMy4yMjctMS40NjgtNC41NjgtNS4xN0w4MiAxMzIuMjA3IDE3MCA4MCIvPjxwYXRoIGZpbGw9IiNhOWM5ZGQiIGQ9Ik05OCAxNzVjMyAwIDQuMzI1LTEuMzcyIDYtM2wxNi0xNS41NTgtMTkuOTU4LTEyLjAzNSIvPjxwYXRoIGZpbGw9InVybCgjYikiIGQ9Ik0xMDAuMDQgMTQ0LjQxbDQ4LjM2IDM1LjczYzUuNTIgMy4wNDQgOS41IDEuNDY3IDEwLjg3Ni01LjEyNGwxOS42ODUtOTIuNzYzYzIuMDE2LTguMDgtMy4wOC0xMS43NDYtOC4zNTgtOS4zNWwtMTE1LjU5IDQ0LjU3MmMtNy44OSAzLjE2NS03Ljg0NCA3LjU2Ny0xLjQ0IDkuNTI4bDI5LjY2NCA5LjI2IDY4LjY3My00My4zMjZjMy4yNC0xLjk2NiA2LjIxNy0uOTEgMy43NzUgMS4yNTgiLz48L3N2Zz4%3D" style="max-width: 100%;"></a>
+<a href="https://wiki.openmrs.org" rel="nofollow"><img src="https://camo.githubusercontent.com/60ac97ee650e55b4ba71a4745411e36b5f300174dc02858f5e6d220c43a6cd3a/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f6f70656e6d72732d77696b692d3542353741362e7376673f6c6f676f3d64617461253341696d616765253246737667253242786d6c25334262617365363425324350484e325a79423462577875637a30696148523063446f764c336433647935334d793576636d63764d6a41774d43397a646d6369494864705a48526f505349784e6a41694947686c6157646f644430694d5451794969423261575633516d393450534977494441674d545977494445304d694925324250484268644767675932786863334d39496e4e304d4349675a443069545445784d7934324d5455674f5451754e446b30597930794c6a41784e69307a4c6a6b334e4330304c6a51774e5330334c6a6b354c5463754d6930784d6934774e7a63744d6930794c6a6b7a4c5451754d5451314c5455754e7a63344c5459754d7a67334c5467754e5459334c5334354d5330784c6a457a4e6930754e544d744d6934314e4467754d5459334c544d754d6a55754e6a67344c5334334d4455674d53347a4f4330784c6a5178494449754d4463324c5449754d5449674f5334314f4330354c6a6333494445354c6a51354c5445354c6a67334d7941794e7934774f53307a4d4334334f4463674f4334774f4330784d5334324d5341784d6934314e6930794d6934324d6a51674d544d754e6a6b744d7a4d754f5455304c6a45794c5445754d5451744c6a51744d69347a4e5330784c6a4d794c544d754d4455744c6a59744c6a51324c5445754d7a4d744c6a63744d6934774e7930754e7930754e4445674d4330754f4449754d4463744d5334794d5334794d6930334c6a4d33494449754f4449744d5451754f4455674e4334354e6930794d5334324f4341324c6a55314c5445754d7a6b754d7a49744d6934314d5341784c6a4d324c5449754f5467674d6934324c5451754f5467674d544d754e6a4d744d5463754e6a67674d6a59754e6a45744d7a45754d4445674e4441754d6930754e544d754e5445744d5334794f4341784c6a45344c5449754e5341784c6a4534637930784c6a6b324c5334324e5330794c6a55744d5334784f474d744d544d754d7a4d744d544d754e546b744d6a59754d444d744d6a59754e5449744d7a45744e4441754d5455744c6a51324c5445754d6a51744d5334314f5330794c6a49344c5449754f5467744d693432517a4d324c6a6b30494455754d6a49674d6a6b754e4455674d693435494449794c6a45754d44686a4c53347a4f5467744c6a45314c5334344d5330754d6a49314c5445754d6a49744c6a49794e5330754e7a51674d4330784c6a51334c6a49304c5449754d4463754e7930754f5451754e7a45344c5445754e4451674d5334344e7a49744d53347a4d69417a4c6a41304f4341784c6a457a494445784c6a4d7a4d6941314c6a59674d6a49754e4467674d544d754e6a673049444d304c6a4135494463754e6941784d4334354d5455674d5463754e5445674d6a45754d444533494449334c6a413549444d774c6a63344e7941784e7934324e5341784e7934354f5451674d7a51754d7a4d674d7a51754f546b3349444d314c6a6335494455304c6a63784d7934784d7941784c6a6334494445754e6a49674d7934784e5467674d79343049444d754d545534614449774c6a6330597934354e434177494445754f444d744c6a4d34494449754e4463744d5334774e6934324e5330754e6a63754f546b744d5334314f4334354e4330794c6a55794c5334784f43307a4c6a63784c5334334d6930334c6a51794c5445754e546b744d5445754d545a6f4c6a4178597930754d4449344c5334784d5330754d4451334c5334794d6930754d4451334c53347a4d7941774c5334334e5334314f4467744d53347a4f4341784c6a4d314e7930784c6a4d344c6a4133494441674c6a457a4c6a41794c6a49754d444d674d5459754f544d674d6934304f4341794e7934324d7a59674e6934304e4341794e7934324e5341784d433434646934774d574d77494451754d5445744f5334324d6a4d674d5441754d7a45744d6a55754d6a5932494445304c6a6731624330754d4441314c6a4178597930784c6a4d354c6a51744d6934304d4459674d5334324e6930794c6a51774e69417a4c6a4531494441674d5334344d5341784c6a51354d79417a4c6a493449444d754d7a51674d7934794f4334794e5455674d4341754e5330754d444d754e7a51744c6a4134494449784c6a41794e6930304c6a673249444d304c6a6b324e5330784d7934774d7a51674d7a51754f5459314c5449794c6a49324d6941774c5445774c6a6b314e4330784f4334344e4330794d4334334e4330304e6934354c5449314c6a45314d6e704e4e5467754d4445674f444d754f444132597930754e4449314c5334304e4451744d5334794e7a63744d5334774d7a67744d6934304d6a49744d5334774d7a67744d5334314e4463674d4330794c6a51324e6941784c5449754f444579494445754e544d744d6934794e6a51674d7934304e4451744e4334794e4341324c6a67304d7930314c6a6b304e6941784d4334794d4468444d5467754f4445674f5467754f544930494441674d5441344c6a63674d4341784d546b754e6a566a4d4341354c6a497a4e7941784d7934344e4341784e79347a4f5451674d7a51754f544131494449794c6a49314e5334774d444d754d4441794c6a41794d794177494334774d794177494334794e5334774e5467754e5441304c6a41354e5334334e7934774f5455674d5334344e4459674d43417a4c6a4d304c5445754e4463674d79347a4e43307a4c6a4934494441744d5334304f4463744d5334774d5463744d6934334d7930794c6a51744d7934784d3277744c6a41784c5334774d6a4a6a4c5445314c6a59304e5330304c6a55304c5449314c6a49334c5445774c6a63304e4330794e5334794e7930784e4334344e544a324c5334774d574d754d4445334c5451754d7a557a494445774c6a59354d7930344c6a4d774e6941794e7934314f4330784d4334334f4463754d4459794c5334774d5334784d6930754d4449754d5467794c5334774d6934334e7a55674d4341784c6a4d324f4334324d7941784c6a4d324f4341784c6a4d35494441674c6a45784c5334774d6934794d7930754d4451324c6a4d7a624334774d5334774d574d744c6a673349444d754e7a45744d533430494463754e4445744d5334314f4341784d5334784d5330754d4455754f544d754d6a6b674d5334344e5334354e4341794c6a557a4c6a59304c6a5933494445754e5451674d5334774e6941794c6a5134494445754d445a6f4d6a41754e7a526a4d5334334f43417749444d754d6a67744d53343049444d754e4445744d7934784e7934304e5330324c6a4133494449754d7a55744d5449754d5455674e5334334f4330784f4334314e4341784c6a45354c5449754d6a45754d6a59744e4334794f5330754e4449744e5334784f43307a4c6a51794c5451754e444d744e7934314f5330354c6a45324c54457a4c6a67784c5445314c6a5931656949675a6d6c736244306949325a6d5a694976506a78775958526f49474e7359584e7a50534a7a6444416949475139496b30334e7934344e6a67674d7a49754e546334597934344d6934334f5467674d5334334e5334354e4463674d69347a4f5334354e44646f4c6a41774e6d4d754e6a5179494441674d5334314e7930754d545134494449754d7a6b744c6a6b304e6941334c6a4d784d7930334c6a4578494445784c6a49304d6930784e533430494445794c6a45774d7930784e7934334d5334784d6a55744c6a4d304c6a49314d6930754e7a4d754d6a55794c5445754d6a59674d4330784c6a67304c5445754e5451744d7934784e69307a4c6a45304c544d754d5459744d53347a4d7941774c5455754d53347a4f5330784d5334314f53347a4f5767744c6a4131597930324c6a55674d4330784d4334794e7930754d7a6b744d5445754e546b744c6a4d354c5445754e6a45674d43307a4c6a4530494445754d7a45744d7934784e43417a4c6a4531494441674c6a557a4c6a457a4c6a6b794c6a4931494445754d6a59754f4459674d69347a494451754e7a6b674d5441754e546b674d5449754d5341784e793433656949675a6d6c736244306949325a6d5a694976506a777663335a6e5067253344253344" alt="OpenMRS 维基" data-canonical-src="https://img.shields.io/badge/openmrs-wiki-5B57A6.svg?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAiIGhlaWdodD0iMTQyIiB2aWV3Qm94PSIwIDAgMTYwIDE0MiI%2BPHBhdGggY2xhc3M9InN0MCIgZD0iTTExMy42MTUgOTQuNDk0Yy0yLjAxNi0zLjk3NC00LjQwNS03Ljk5LTcuMi0xMi4wNzctMi0yLjkzLTQuMTQ1LTUuNzc4LTYuMzg3LTguNTY3LS45MS0xLjEzNi0uNTMtMi41NDguMTY3LTMuMjUuNjg4LS43MDUgMS4zOC0xLjQxIDIuMDc2LTIuMTIgOS41OC05Ljc3IDE5LjQ5LTE5Ljg3MyAyNy4wOS0zMC43ODcgOC4wOC0xMS42MSAxMi41Ni0yMi42MjQgMTMuNjktMzMuOTU0LjEyLTEuMTQtLjQtMi4zNS0xLjMyLTMuMDUtLjYtLjQ2LTEuMzMtLjctMi4wNy0uNy0uNDEgMC0uODIuMDctMS4yMS4yMi03LjM3IDIuODItMTQuODUgNC45Ni0yMS42OCA2LjU1LTEuMzkuMzItMi41MSAxLjM2LTIuOTggMi42LTQuOTggMTMuNjMtMTcuNjggMjYuNjEtMzEuMDEgNDAuMi0uNTMuNTEtMS4yOCAxLjE4LTIuNSAxLjE4cy0xLjk2LS42NS0yLjUtMS4xOGMtMTMuMzMtMTMuNTktMjYuMDMtMjYuNTItMzEtNDAuMTUtLjQ2LTEuMjQtMS41OS0yLjI4LTIuOTgtMi42QzM2Ljk0IDUuMjIgMjkuNDUgMi45IDIyLjEuMDhjLS4zOTgtLjE1LS44MS0uMjI1LTEuMjItLjIyNS0uNzQgMC0xLjQ3LjI0LTIuMDcuNy0uOTQuNzE4LTEuNDQgMS44NzItMS4zMiAzLjA0OCAxLjEzIDExLjMzMiA1LjYgMjIuNDggMTMuNjg0IDM0LjA5IDcuNiAxMC45MTUgMTcuNTEgMjEuMDE3IDI3LjA5IDMwLjc4NyAxNy42NSAxNy45OTQgMzQuMzMgMzQuOTk3IDM1Ljc5IDU0LjcxMy4xMyAxLjc4IDEuNjIgMy4xNTggMy40IDMuMTU4aDIwLjc0Yy45NCAwIDEuODMtLjM4IDIuNDctMS4wNi42NS0uNjcuOTktMS41OC45NC0yLjUyLS4xOC0zLjcxLS43Mi03LjQyLTEuNTktMTEuMTZoLjAxYy0uMDI4LS4xMS0uMDQ3LS4yMi0uMDQ3LS4zMyAwLS43NS41ODgtMS4zOCAxLjM1Ny0xLjM4LjA3IDAgLjEzLjAyLjIuMDMgMTYuOTMgMi40OCAyNy42MzYgNi40NCAyNy42NSAxMC44di4wMWMwIDQuMTEtOS42MjMgMTAuMzEtMjUuMjY2IDE0Ljg1bC0uMDA1LjAxYy0xLjM5LjQtMi40MDYgMS42Ni0yLjQwNiAzLjE1IDAgMS44MSAxLjQ5MyAzLjI4IDMuMzQgMy4yOC4yNTUgMCAuNS0uMDMuNzQtLjA4IDIxLjAyNi00Ljg2IDM0Ljk2NS0xMy4wMzQgMzQuOTY1LTIyLjI2MiAwLTEwLjk1NC0xOC44NC0yMC43NC00Ni45LTI1LjE1MnpNNTguMDEgODMuODA2Yy0uNDI1LS40NDQtMS4yNzctMS4wMzgtMi40MjItMS4wMzgtMS41NDcgMC0yLjQ2NiAxLTIuODEyIDEuNTMtMi4yNjQgMy40NDQtNC4yNCA2Ljg0My01Ljk0NiAxMC4yMDhDMTguODEgOTguOTI0IDAgMTA4LjcgMCAxMTkuNjVjMCA5LjIzNyAxMy44NCAxNy4zOTQgMzQuOTA1IDIyLjI1NS4wMDMuMDAyLjAyMyAwIC4wMyAwIC4yNS4wNTguNTA0LjA5NS43Ny4wOTUgMS44NDYgMCAzLjM0LTEuNDcgMy4zNC0zLjI4IDAtMS40ODctMS4wMTctMi43My0yLjQtMy4xM2wtLjAxLS4wMjJjLTE1LjY0NS00LjU0LTI1LjI3LTEwLjc0NC0yNS4yNy0xNC44NTJ2LS4wMWMuMDE3LTQuMzUzIDEwLjY5My04LjMwNiAyNy41OC0xMC43ODcuMDYyLS4wMS4xMi0uMDIuMTgyLS4wMi43NzUgMCAxLjM2OC42MyAxLjM2OCAxLjM5IDAgLjExLS4wMi4yMy0uMDQ2LjMzbC4wMS4wMWMtLjg3IDMuNzEtMS40IDcuNDEtMS41OCAxMS4xMS0uMDUuOTMuMjkgMS44NS45NCAyLjUzLjY0LjY3IDEuNTQgMS4wNiAyLjQ4IDEuMDZoMjAuNzRjMS43OCAwIDMuMjgtMS40IDMuNDEtMy4xNy40NS02LjA3IDIuMzUtMTIuMTUgNS43OC0xOC41NCAxLjE5LTIuMjEuMjYtNC4yOS0uNDItNS4xOC0zLjQyLTQuNDMtNy41OS05LjE2LTEzLjgxLTE1LjY1eiIgZmlsbD0iI2ZmZiIvPjxwYXRoIGNsYXNzPSJzdDAiIGQ9Ik03Ny44NjggMzIuNTc4Yy44Mi43OTggMS43NS45NDcgMi4zOS45NDdoLjAwNmMuNjQyIDAgMS41Ny0uMTQ4IDIuMzktLjk0NiA3LjMxMy03LjExIDExLjI0Mi0xNS40IDEyLjEwMy0xNy43MS4xMjUtLjM0LjI1Mi0uNzMuMjUyLTEuMjYgMC0xLjg0LTEuNTQtMy4xNi0zLjE0LTMuMTYtMS4zMyAwLTUuMS4zOS0xMS41OS4zOWgtLjA1Yy02LjUgMC0xMC4yNy0uMzktMTEuNTktLjM5LTEuNjEgMC0zLjE0IDEuMzEtMy4xNCAzLjE1IDAgLjUzLjEzLjkyLjI1IDEuMjYuODYgMi4zIDQuNzkgMTAuNTkgMTIuMSAxNy43eiIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg%3D%3D" style="max-width: 100%;"></a></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">支持</font></font></h2><a id="user-content-support" class="anchor" aria-label="永久链接： 支持" href="#support"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><font style="vertical-align: inherit;"><a href="https://talk.openmrs.org/" rel="nofollow"><font style="vertical-align: inherit;">通过OpenMRS Talk</font></a><font style="vertical-align: inherit;">与我们交谈</font></font><a href="https://talk.openmrs.org/" rel="nofollow"><font style="vertical-align: inherit;"></font></a></p>
+<div class="markdown-heading" dir="auto"><h2 tabindex="-1" class="heading-element" dir="auto"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">执照</font></font></h2><a id="user-content-license" class="anchor" aria-label="永久链接：许可证" href="#license"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></a></div>
+<p dir="auto"><a href="http://openmrs.org/license/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">MPL 2.0 带高清</font></font></a><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">© </font></font><a href="http://www.openmrs.org/" rel="nofollow"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OpenMRS Inc.</font></font></a></p>
+</article></div>
